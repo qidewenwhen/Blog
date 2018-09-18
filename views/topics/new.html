@@ -1,0 +1,51 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <form id = "topic_form" action = "/topics/new" method = "post">
+        <div class="form-group">
+          <label for="input_name">Section</label>
+          <select class="form-control" name = "section">
+            <option>Life</option>
+            <option>Work</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input_title">Title</label>
+          <input type="text" class="form-control" required minlength="2" maxlength="10" id="input_title" name = "title" placeholder="Title">
+        </div>
+        <div class="form-group">
+          <label for="textarea_message">Content</label>
+          <textarea class="form-control" name = "content" rows="3" required minlength="5" maxlength="20"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+  <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('#topic_form').on('submit', function (e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+      $.ajax({
+        url: '/topics/new',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          if (err_code === 0) {
+            window.location.href = '/'
+          } else if (err_code === 500) {
+            window.alert('The server is busy at this time. Please try again！')
+          }
+        }
+      })
+    })
+  </script>
+</section>
+{{/block}}

@@ -1,0 +1,65 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  {{include '../_partials/settings-nav.html'}}
+  <div class="col-md-5">
+    <div class="subhead">
+      <h2>Change password</h2>
+    </div>
+    <hr>
+    <form id = "password_form" action = "/settings/admin/" method = "post">
+      <input type = "hidden" name = "id" value = "{{ user._id }}">
+      <div class="form-group">
+        <label for="password">Current password</label>
+        <input type="password" class="form-control" required minlength = "2" name = "passwordOld" id="password1" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="password">New password</label>
+        <input type="password" class="form-control" required minlength = "2" name = "passwordNew" id="password2" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="password">Confirm password</label>
+        <input type="password" class="form-control" required minlength = "2" name = "passwordNew2" id="password3" placeholder="">
+      </div>
+      <button type="submit" class="btn btn-success">Save</button>
+    </form>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script>
+    $('#password_form').on('submit', function (e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+      $.ajax({
+        url: '/settings/admin',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          if (err_code === 0) {
+            window.location.href = '/'
+          } else if (err_code === 1) {
+            window.alert('The current password does not exist')
+          } else if (err_code === 2) {
+            window.alert('The new password does not match')
+          } else if (err_code === 500) {
+            window.alert('The server is busy at this time. Please try again！')
+          }
+        }
+      })
+    })
+  </script>
+    <div class="subhead">
+      <h2>Delete account</h2>
+      <hr>
+    </div>
+    <div>
+      <p>The delete operation is unreversible</p>
+      <a class="btn btn-danger" href="/settings/admin/delete?id={{ user._id }}">Delete account</a>
+    </div>
+    <hr>
+  </div>
+</section>
+{{/block}}

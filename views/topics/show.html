@@ -1,0 +1,29 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/markdown-github.css">
+<style>
+  .panel .panel-heading .action i {
+    margin-right: 10px;
+  }
+</style>
+{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <article class="markdown-body">
+      <h1 id=""><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>{{ topic.title }}</h1>
+      <p>{{ topic.content }}</p>
+      </article>
+    
+      <div id="app"></div>
+      <script src="/public/js/main.js"></script>
+    </div>
+  </div>
+</section>
+{{/block}}
+
